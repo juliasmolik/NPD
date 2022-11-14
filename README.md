@@ -5,5 +5,6 @@
 * LAB 4 - Linux an introduction (4.11): NDP_lab4.sh
 * LAB 5 - Git an introduction (7.11)
 * LAB 6 - Python data types and functions (14.11)
+
   a) Homework: NPD_lab6.py
   b) Additional task: NPD_lab6_additional.py
