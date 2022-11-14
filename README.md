@@ -7,4 +7,5 @@
 * LAB 6 - Python data types and functions (14.11)
 
   a) Homework: NPD_lab6.py
+  
   b) Additional task: NPD_lab6_additional.py
