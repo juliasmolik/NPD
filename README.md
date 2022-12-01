@@ -11,4 +11,4 @@
   b) Additional task: NPD_lab6_additional.py
 
 * LAB 7 - Modules and packages. Argparse (21.11): https://github.com/zofiakk/NYPD_lab7
-* LAB 8 - Jupyter. Debugger & profiler (28.11): NPD_lab8.py, custom_dijkstra.txt, dijkstra.txt
+* LAB 8 - Jupyter. Debugger & profiler (28.11): NPD_lab8.py, custom_dijkstra.txt (49.191s), dijkstra.txt (80.106s)
