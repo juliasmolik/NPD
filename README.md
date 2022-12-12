@@ -13,3 +13,4 @@
 * LAB 7 - Modules and packages. Argparse (21.11): https://github.com/zofiakk/NYPD_lab7
 * LAB 8 - Jupyter. Debugger & profiler (28.11): NPD_lab8.py, custom_dijkstra.txt (49.191s), dijkstra.txt (80.106s)
 * LAB 9 - Exceptions. Program testing (5.12): test_nbp.py, nbp_change.py
+* LAB 10 - NumPy (12.12): NPD_lab10.py, homework3_2022_ws.ipynb
