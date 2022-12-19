@@ -14,3 +14,4 @@
 * LAB 8 - Jupyter. Debugger & profiler (28.11): NPD_lab8.py, custom_dijkstra.txt (49.191s), dijkstra.txt (80.106s)
 * LAB 9 - Exceptions. Program testing (5.12): test_nbp.py, nbp_change.py
 * LAB 10 - NumPy (12.12): NPD_lab10.py, homework3_2022_ws.ipynb
+* LAB 11 - Pandas (19.12): NPD_lab11.ipynb (Exercise 3)
