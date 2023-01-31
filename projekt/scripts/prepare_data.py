@@ -219,7 +219,7 @@ def get_countries(gdp_data, population_data, co2_data):
     all_countries, only_co2_countries, only_population_countries = find_simmilar_countries_exceptions(all_countries, only_co2_countries, only_population_countries)
     
     #print(only_co2_countries,"\n\n",only_population_countries, "\n")
-    print("{} countries to analyze. Ommiting the total of {} countries from all the files".format(len(all_countries), len(only_co2_countries)+len(only_population_countries)))
+    print("{} countries to analyze. Ommiting the total of {} countries from all the files.".format(len(all_countries), len(only_co2_countries)+len(only_population_countries)))
     
     all_countries_sorted = sorted(all_countries)
     
@@ -230,10 +230,14 @@ def create_data(gdp_data, population_data, co2_data):
     """
     Function used to merge all the data. Creates a dataframe with all 
     the years and countries common in all files and saves it to a csv file. 
+    
+    :param gdp_data: csv file with GDP data
+    :param population_data: csv file with population data
+    :param co2_data: csv file with CO2 emissions data
     """
     
     # directory of the output csv file
-    path = './results/'
+    path = './projekt/results/'
     if not os.path.exists(path):
         os.makedirs(path)
 
@@ -365,4 +369,65 @@ def create_data(gdp_data, population_data, co2_data):
     df_result.to_csv("./projekt/results/all_data.csv", index=False)
     
     return df_result
-
+    
+    
+def custom_filtering(gdp_data, population_data, co2_data, start_year, end_year, file_name):
+    """
+    Function used to filter the output data. Limits the dataset to specific years. If it 
+    results in an empty dataset, it sets a default time interval. The function saves the 
+    filtered data to a csv file. 
+    
+    :param gdp_data: csv file with GDP data
+    :param population_data: csv file with population data
+    :param co2_data: csv file with CO2 emissions data
+    :param start_year: selected start year
+    :param end_year: selected end year
+    :param file_name: output csv file name
+    """
+    
+    # data combining three separate files (csv file)
+    merged_data = create_data(gdp_data, population_data, co2_data)
+    
+    # if a time interval is selected
+    if start_year or end_year:
+        # if the year is not present in the data, setting the default value (smallest year in the data)
+        if start_year < min([x for x in list(merged_data["Year"])]):
+            s_year = min([x for x in list(merged_data["Year"])])
+            print("The selected year is below the available range. Setting the start year as: {}".format(s_year))
+        else:
+            s_year = start_year
+        # if the year is not present in the data, setting the default value (biggest year in the data)
+        if end_year > max([x for x in list(merged_data["Year"])]):
+            e_year = max([x for x in list(merged_data["Year"])])
+            print("The selected year is above the available range. Setting the end year as: {}".format(e_year))
+        else:
+            e_year = end_year
+            
+        # if the starting year is greater than the ending year, setting the default value (smallest and biggest year in the data, respectively)
+        if s_year > e_year:
+            s_year = min([x for x in list(merged_data["Year"])])
+            e_year = max([x for x in list(merged_data["Year"])])
+            print("The start year is greater than the end year. Setting the default time interval (years): {}-{}".format(s_year, e_year))
+            # saving data to csv file
+            merged_data.to_csv("./projekt/results/{}.csv".format(file_name), index=False)
+            return merged_data
+        # otherwise
+        else:
+            print("Set time interval (years): {}-{}".format(s_year, e_year))
+            # limiting the data to the selected time period 
+            custom_data = merged_data[(merged_data["Year"] >= s_year) & (merged_data["Year"] <= e_year)].reset_index(drop=True)
+            # if the selected time interval results in an empty dataset, set the default time interval (smallest and biggest year in the data, respectively)
+            # and save the data to a csv file
+            if custom_data.empty:
+                mini = min([x for x in list(merged_data["Year"])])
+                maxi = max([x for x in list(merged_data["Year"])])
+                print("The selected time interval resulted in an empty dataset. Removing the filtering of years. Setting the default time interval (years) {}-{}.".format(mini, maxi))
+                merged_data.to_csv("./projekt/results/{}.csv".format(file_name), index=False)
+                return merged_data
+            else:
+                custom_data.to_csv("./projekt/results/{}.csv".format(file_name), index=False)
+                return custom_data
+    # if no time interval is selected, save the file with all the data
+    else:
+        merged_data.to_csv("./projekt/results/{}.csv".format(file_name), index=False)
+        return merged_data
