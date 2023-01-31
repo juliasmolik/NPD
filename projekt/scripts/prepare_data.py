@@ -362,7 +362,7 @@ def create_data(gdp_data, population_data, co2_data):
     # creating an output dataframe and saving it to a file
     df_result = pd.DataFrame(data_dataframe, columns=["Year", "Country Name", "Country Code", "GDP", "Population", "CO2 Total"])
     df_result = df_result.sort_values(['Year', 'Country Name'], ascending = [True, True])
-    df_result.to_csv("./results/all_data.csv", index=False)
+    df_result.to_csv("./projekt/results/all_data.csv", index=False)
     
     return df_result
 
