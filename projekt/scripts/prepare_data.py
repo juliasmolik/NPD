@@ -68,8 +68,8 @@ def filter_data(gdp_data, population_data, co2_data):
     df_co2 = read_co2_data(co2_data)
     
     # extracting years from data files
-    years_gdp = [int(x) for x in list(set(df_gdp.columns[2:]))] # [2:], since the first two columns are the name and abbreviation of the country 
-    years_population = [int(x) for x in list(set(df_population.columns[2:]))] # [2:], since the first two columns are the name and abbreviation of the country
+    years_gdp = [int(x) for x in list(set(df_gdp.columns[2:]))] # [2:], since the first two columns are the name and acronym of the country 
+    years_population = [int(x) for x in list(set(df_population.columns[2:]))] # [2:], since the first two columns are the name and acronym of the country
     years_co2 = [int(x) for x in list(set(df_co2["Year"]))]
     
     # years that occur in all files
@@ -130,15 +130,16 @@ def find_similar_countries(all_countries, list_of_countries1, list_of_countries2
     # for each country in the first list
     for country1 in list_of_countries1:
         # one most similar country name from the second list 
-        close_matches = difflib.get_close_matches(country1, list_of_countries2, n=1, cutoff=0.75)
+        close_matches = difflib.get_close_matches(country1.lower(), [x.lower() for x in list_of_countries2], n=1, cutoff=0.75)
         # if a similar name appears in the second list
         if close_matches:
             # if the country1 is not already in the list of all countries, add it
             if country1 not in all_countries:
-                all_countries.append(country1)
+                all_countries.append(create_country_name(country1))
             # remove the analyzed country and the similar country from the lists
             list_of_countries1.remove(country1)
-            list_of_countries2.remove(close_matches[0])
+            idx = [x.lower() for x in list_of_countries2].index(close_matches[0])
+            del list_of_countries2[idx]
     
     return all_countries, list_of_countries1, list_of_countries2
 
@@ -149,7 +150,7 @@ def find_simmilar_countries_exceptions(all_countries, list_of_countries1, list_o
     or similar names) and two lists that contain countries that appear only in one of the lists. 
     """
 
-    dictionary = {"Yemen, Rep.":"Yemen", "Iran, Islamic Rep.": "Islamic Republic Of Iran",
+    exception_countries = {"Yemen, Rep.":"Yemen", "Iran, Islamic Rep.": "Islamic Republic Of Iran",
                   "Czechia": "Czech Republic", "Egypt, Arab Rep.":"Egypt", "Moldova": "Republic Of Moldova",
                   "Congo, Dem. Rep.": "Democratic Republic Of The Congo (Formerly Zaire)", "Congo, Rep.": "Congo",
                   "United States":"United States Of America", "France":"France (Including Monaco)", "Korea, Rep.": "Republic Of Korea",
@@ -160,17 +161,17 @@ def find_simmilar_countries_exceptions(all_countries, list_of_countries1, list_o
                   "South Sudan":"Republic Of South Sudan", "Gambia, The":"Gambia"}
 
     # for each country exception 
-    for country in dictionary:
+    for country in exception_countries:
         # if the exception has not yet been added
-        if dictionary[country] not in all_countries:
+        if exception_countries[country] not in all_countries:
             # if such an exception occurs in the files - precaution if any countries disappear in the data files 
-            if country in list_of_countries1 or dictionary[country] in list_of_countries2:
-                all_countries.append(dictionary[country])
+            if country in list_of_countries1 or exception_countries[country] in list_of_countries2:
+                all_countries.append(exception_countries[country])
         # remove exceptions from the list of unique countries for each file
         if country in list_of_countries1:
             list_of_countries1.remove(country)
-        if dictionary[country] in list_of_countries2:
-            list_of_countries2.remove(dictionary[country])
+        if exception_countries[country] in list_of_countries2:
+            list_of_countries2.remove(exception_countries[country])
         
     return all_countries, list_of_countries1, list_of_countries2
     
@@ -205,19 +206,163 @@ def get_countries(gdp_data, population_data, co2_data):
                 all_countries.append(create_country_name(country))
     
     # countries only in the co2 file
-    only_co2_countries = [create_country_name(x) for x in co2_countries if x not in population_countries]   
+    only_co2_countries = [create_country_name(x) for x in co2_countries if create_country_name(x) not in population_countries]   
     # countries only in the population/gdp file
-    only_population_countries = [create_country_name(x) for x in population_countries if x not in co2_countries]  
+    only_population_countries = [create_country_name(x) for x in population_countries if create_country_name(x) not in co2_countries]  
 
     # searching for similar names in the other list    
-    all_countries, only_co2_countries, only_population_countries = find_similar_countries(all_countries, only_co2_countries, only_population_countries)
     all_countries, only_population_countries, only_co2_countries = find_similar_countries(all_countries, only_population_countries, only_co2_countries)
+    all_countries, only_co2_countries, only_population_countries = find_similar_countries(all_countries, only_co2_countries, only_population_countries)
     
     # adding exceptions 
     all_countries, only_population_countries, only_co2_countries = find_simmilar_countries_exceptions(all_countries, only_population_countries, only_co2_countries)
     all_countries, only_co2_countries, only_population_countries = find_simmilar_countries_exceptions(all_countries, only_co2_countries, only_population_countries)
+    
+    #print(only_co2_countries,"\n\n",only_population_countries, "\n")
     print("{} countries to analyze. Ommiting the total of {} countries from all the files".format(len(all_countries), len(only_co2_countries)+len(only_population_countries)))
     
     all_countries_sorted = sorted(all_countries)
     
     return all_countries_sorted
+
+
+def create_data(gdp_data, population_data, co2_data):
+    """
+    Function used to merge all the data. Creates a dataframe with all 
+    the years and countries common in all files and saves it to a csv file. 
+    """
+    
+    # directory of the output csv file
+    path = './results/'
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+    # countries that are among the exceptions 
+    exceptions_countries = {"Yemen, Rep.":"Yemen", "Iran, Islamic Rep.": "Islamic Republic Of Iran",
+                  "Czechia": "Czech Republic", "Egypt, Arab Rep.":"Egypt", "Moldova": "Republic Of Moldova",
+                  "Congo, Dem. Rep.": "Democratic Republic Of The Congo (Formerly Zaire)", "Congo, Rep.": "Congo",
+                  "United States":"United States Of America", "France":"France (Including Monaco)", "Korea, Rep.": "Republic Of Korea",
+                  "Korea, Dem. People's Rep.": "Democratic People S Republic Of Korea", "Cameroon": "Republic Of Cameroon",
+                  "Italy":"Italy (Including San Marino)", "Bolivia":"Plurinational State Of Bolivia", "Slovak Republic":"Slovakia",
+                  "China":"China (Mainland)", "Hong Kong SAR, China":"Hong Kong Special Adminstrative Region Of China", 
+                  "Macao SAR, China":"Macau Special Adminstrative Region Of China", "Bahamas, The":"Bahamas", 
+                  "South Sudan":"Republic Of South Sudan", "Gambia, The":"Gambia"}
+
+    
+    data_dataframe = []
+    
+    # loading data files and finding common countries 
+    filtered_gdp, filtered_population, filtered_co2 = filter_data(gdp_data, population_data, co2_data)
+    countries = get_countries(gdp_data, population_data, co2_data)
+
+    
+    for year in sorted(list(set(filtered_co2["Year"])), reverse=True):
+        #print(year)
+        for country_tmp in countries:
+            # if the country name does not explicite appear in the population/gdp data
+            if country_tmp not in list(filtered_population["Country Name"]):
+                # searching for the most similar name
+                close_matches = difflib.get_close_matches(country_tmp, list(filtered_population["Country Name"]), n=1, cutoff=0.75)
+                if close_matches:
+                    country = close_matches[0]
+                # if there is still no name, this name may be among the exceptions 
+                else:
+                    # if the country name does not consist of one country, leave the country name
+                    if "including" in country.lower():
+                        country = country_tmp
+                    # if the country name consists of one country - change country name to exception
+                    else:
+                        country = list(exceptions_countries.keys())[list(exceptions_countries.values()).index(country_tmp)]
+            else:
+                country = country_tmp
+            
+            # if the country name applies to two countries, combine the data for them
+            if "including" in country.lower():
+                merged_countries = [x.replace(")", "").strip() for x in country.split("(Including ")]
+                
+                sub_population_tmp = pd.DataFrame()
+                sub_gdp_tmp = pd.DataFrame()
+                
+                # common dataframe for both countries
+                for m_country in merged_countries:
+                    sub_population_tmp = pd.concat([sub_population_tmp, filtered_population[filtered_population["Country Name"] == m_country]])
+                    sub_gdp_tmp = pd.concat([sub_gdp_tmp, filtered_gdp[filtered_gdp["Country Name"] == m_country]])
+
+                # creating a dataframe with population data for merged countries 
+                data_tmp = [country]
+                code = " + ".join(list(sub_population_tmp["Country Code"]))
+                data_tmp.append(code)
+                for column in list(sub_population_tmp.columns)[2:]:
+                    data_tmp.append(sub_population_tmp[column].sum())
+                    
+                sub_population = pd.DataFrame([data_tmp], columns=list(sub_population_tmp.columns))    
+
+                # creating a dataframe with population/gdp data for merged countries
+                data_tmp = [country]
+                code = "+".join(list(sub_gdp_tmp["Country Code"]))
+                data_tmp.append(code)
+                for column in list(sub_gdp_tmp.columns)[2:]:
+                    data_tmp.append(sub_gdp_tmp[column].sum())
+                    
+                sub_gdp = pd.DataFrame([data_tmp], columns=list(sub_gdp_tmp.columns))  
+                
+            else:
+                sub_population = filtered_population[filtered_population["Country Name"] == country]
+                sub_gdp = filtered_gdp[filtered_gdp["Country Name"] == country]
+        
+            # if a country has an acronym in the data
+            try:
+                country_code = list(sub_population["Country Code"])[0]
+            except:
+                # if this country is one of the exceptions, take the exception acronym 
+                try:
+                    country_code = list(filtered_population[filtered_population["Country Name"] == list(exceptions_countries.keys())[list(exceptions_countries.values()).index(country)]]["Country Code"])[0]
+                # otherwise manually create a acronym 
+                except:
+                    country_code = "".join(e[0] for e in country.split() if e.isalnum())
+
+            #print(country)
+            
+            # if the country name does not explicite appear in the co2 data
+            if country_tmp.lower() not in [x.lower() for x in list(filtered_co2["Country"])]:
+                # searching for the most similar name
+                close_matches = difflib.get_close_matches(country_tmp.lower(), [x.lower() for x in list(filtered_co2["Country"])], n=1, cutoff=0.75)
+                if close_matches:
+                    country = close_matches[0]
+                # this name may be among the exceptions 
+                else:
+                    # change of special characters - proper name in the data file
+                    if " & " in country:
+                        country = country.replace(" & ", "-")
+                    elif "and" in country:
+                        country = country.replace(" and ", " & ")
+                    else:
+                        country = country_tmp
+            else:
+                country = country_tmp
+                
+            # country data for the given year
+            sub_co2 = filtered_co2[(filtered_co2["Country"] == country.upper()) & (filtered_co2["Year"] == year)]
+            
+            # extracting gdp, population and co2 information from each dataframe
+            try:
+                gdp = list(sub_gdp[str(year)])[0]
+            except:
+                gdp = ""
+            try:
+                population = list(sub_population[str(year)])[0]
+            except:
+                population = ""
+            try:
+                co2 = list(sub_co2["Total"])[0]
+            except:
+                co2 = ""
+            data_dataframe.append([year, create_country_name(country), country_code, gdp, population, co2])  
+    
+    # creating an output dataframe and saving it to a file
+    df_result = pd.DataFrame(data_dataframe, columns=["Year", "Country Name", "Country Code", "GDP", "Population", "CO2 Total"])
+    df_result = df_result.sort_values(['Year', 'Country Name'], ascending = [True, True])
+    df_result.to_csv("./results/all_data.csv", index=False)
+    
+    return df_result
+
