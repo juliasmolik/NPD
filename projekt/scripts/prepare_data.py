@@ -163,7 +163,9 @@ def find_simmilar_countries_exceptions(all_countries, list_of_countries1, list_o
     for country in dictionary:
         # if the exception has not yet been added
         if dictionary[country] not in all_countries:
-            all_countries.append(dictionary[country])
+            # if such an exception occurs in the files - precaution if any countries disappear in the data files 
+            if country in list_of_countries1 or dictionary[country] in list_of_countries2:
+                all_countries.append(dictionary[country])
         # remove exceptions from the list of unique countries for each file
         if country in list_of_countries1:
             list_of_countries1.remove(country)
