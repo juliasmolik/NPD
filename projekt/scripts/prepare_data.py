@@ -219,7 +219,7 @@ def get_countries(gdp_data, population_data, co2_data):
     all_countries, only_co2_countries, only_population_countries = find_simmilar_countries_exceptions(all_countries, only_co2_countries, only_population_countries)
     
     #print(only_co2_countries,"\n\n",only_population_countries, "\n")
-    print("{} countries to analyze. Ommiting the total of {} countries from all the files.".format(len(all_countries), len(only_co2_countries)+len(only_population_countries)))
+    print("{} countries in the output file. Ommiting the total of {} countries from all the files.".format(len(all_countries), len(only_co2_countries)+len(only_population_countries)))
     
     all_countries_sorted = sorted(all_countries)
     
@@ -260,7 +260,7 @@ def create_data(gdp_data, population_data, co2_data):
     countries = get_countries(gdp_data, population_data, co2_data)
 
     
-    for year in sorted(list(set(filtered_co2["Year"])), reverse=True):
+    for year in sorted(list(set(filtered_co2["Year"]))):
         #print(year)
         for country_tmp in countries:
             # if the country name does not explicite appear in the population/gdp data
@@ -272,7 +272,7 @@ def create_data(gdp_data, population_data, co2_data):
                 # if there is still no name, this name may be among the exceptions 
                 else:
                     # if the country name does not consist of one country, leave the country name
-                    if "including" in country.lower():
+                    if "including" in country_tmp.lower():
                         country = country_tmp
                     # if the country name consists of one country - change country name to exception
                     else:
@@ -324,8 +324,6 @@ def create_data(gdp_data, population_data, co2_data):
                 # otherwise manually create a acronym 
                 except:
                     country_code = "".join(e[0] for e in country.split() if e.isalnum())
-
-            #print(country)
             
             # if the country name does not explicite appear in the co2 data
             if country_tmp.lower() not in [x.lower() for x in list(filtered_co2["Country"])]:
@@ -362,7 +360,7 @@ def create_data(gdp_data, population_data, co2_data):
             except:
                 co2 = ""
             data_dataframe.append([year, create_country_name(country), country_code, gdp, population, co2])  
-    
+
     # creating an output dataframe and saving it to a file
     df_result = pd.DataFrame(data_dataframe, columns=["Year", "Country Name", "Country Code", "GDP", "Population", "CO2 Total"])
     df_result = df_result.sort_values(['Year', 'Country Name'], ascending = [True, True])
