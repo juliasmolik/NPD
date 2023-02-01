@@ -1,6 +1,5 @@
 import argparse, sys, os, cProfile, pstats
 import prepare_data, calculations, visualize
-from pstats import SortKey
 
 def main():	
 
