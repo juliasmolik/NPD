@@ -21,7 +21,7 @@ def co2_per_capita(csv_file):
     :param csv_file: a csv file that contains merged data
     """
     
-    path = './results/tables/'
+    path = './projekt/results/tables/'
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -43,7 +43,7 @@ def co2_per_capita(csv_file):
     
     # for each year in the data selecting 5 countries that achieved the highest values
     for year in sorted(list(set(df["Year"]))):
-        sub_df = df[df["Year"] == year][["Year", "Country Name", "CO2 Total", "CO2 per capita"]]
+        sub_df = df[df["Year"] == year][["Year", "Country Name", "Country Code", "CO2 Total", "CO2 per capita"]]
         sub_df = sub_df.sort_values(["CO2 per capita"], ascending = [False])
         # as instructed - 5 countries with the highest value
         new_df = pd.concat([new_df, sub_df.head(5)])
@@ -62,7 +62,7 @@ def gdp_per_capita(csv_file):
     :param csv_file: a csv file that contains merged data
     """
     
-    path = './results/tables/'
+    path = './projekt/results/tables/'
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -85,7 +85,7 @@ def gdp_per_capita(csv_file):
     
     # for each year in the data selecting 5 countries that achieved the highest values
     for year in sorted(list(set(df["Year"]))):
-        sub_df = df[df["Year"] == year][["Year", "Country Name", "GDP", "GDP per capita"]]
+        sub_df = df[df["Year"] == year][["Year", "Country Name", "Country Code", "GDP", "GDP per capita"]]
         sub_df = sub_df.sort_values(["GDP per capita"], ascending = [False])
         # as instructed - 5 countries with the highest value
         new_df = pd.concat([new_df, sub_df.head(5)])
@@ -102,7 +102,7 @@ def change_of_co2_emission(csv_file):
     :param csv_file: a csv file that contains merged data
     """
     
-    path = './results/tables/'
+    path = './projekt/results/tables/'
     if not os.path.exists(path):
         os.makedirs(path)
     
