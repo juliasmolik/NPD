@@ -21,7 +21,7 @@ def co2_per_capita(csv_file):
     :param csv_file: a csv file that contains merged data
     """
     
-    path = './projekt/results/tables/'
+    path = '../results/tables/'
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -62,7 +62,7 @@ def gdp_per_capita(csv_file):
     :param csv_file: a csv file that contains merged data
     """
     
-    path = './projekt/results/tables/'
+    path = '../results/tables/'
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -102,7 +102,7 @@ def change_of_co2_emission(csv_file):
     :param csv_file: a csv file that contains merged data
     """
     
-    path = './projekt/results/tables/'
+    path = '../results/tables/'
     if not os.path.exists(path):
         os.makedirs(path)
     

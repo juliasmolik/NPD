@@ -15,7 +15,7 @@ def visualize_co2_change(csv_file):
     df = pd.read_csv(csv_file)
     
     # directory where the results are saved
-    path = './projekt/results/plots/'
+    path = '../results/plots/'
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -49,7 +49,7 @@ def visualize_co2_per_capita(csv_file):
     df = pd.read_csv(csv_file)
     
     # directory where the results are saved
-    path = './projekt/results/plots/'
+    path = '../results/plots/'
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -115,7 +115,7 @@ def visualize_gdp_per_capita(csv_file):
     df = pd.read_csv(csv_file)
     
     # directory where the results are saved
-    path = './projekt/results/plots/'
+    path = '../results/plots/'
     if not os.path.exists(path):
         os.makedirs(path)
     
