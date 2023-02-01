@@ -10,7 +10,7 @@ def main():
     parser.add_argument('-s', action='store', type = int, dest='start_year', help='Date range for analysis - start year')
     parser.add_argument('-k', action='store', type = int, dest='end_year', help='Date range for analysis - end year')
     parser.add_argument('-name', action='store', dest='output_name', help='Output file name')
-    parser.add_argument('-v', action='store_true', dest='visualize', help='Data visualization with plots')
+    parser.add_argument('-v', action='store_false', dest='visualize', help='Data visualization with plots')
 
     args = parser.parse_args()
 
