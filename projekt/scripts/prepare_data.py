@@ -221,7 +221,7 @@ def get_countries(gdp_data, population_data, co2_data):
     #print(only_co2_countries,"\n\n",only_population_countries, "\n")
     print("{} countries in the output file. Ommiting the total of {} countries from all the files.".format(len(all_countries), len(only_co2_countries)+len(only_population_countries)))
     
-    all_countries_sorted = sorted(all_countries)
+    all_countries_sorted = sorted(list(set(all_countries)))
     
     return all_countries_sorted
 

@@ -1,5 +1,6 @@
 import argparse, sys, os, cProfile, pstats
 import prepare_data, calculations, visualize
+import cProfile, subprocess, pydot, io
 
 def main():	
 
@@ -10,7 +11,7 @@ def main():
     parser.add_argument('-s', action='store', type = int, dest='start_year', help='Date range for analysis - start year')
     parser.add_argument('-k', action='store', type = int, dest='end_year', help='Date range for analysis - end year')
     parser.add_argument('-name', action='store', dest='output_name', help='Output file name')
-    parser.add_argument('-v', action='store_false', dest='visualize', help='Data visualization with plots')
+    parser.add_argument('-v', action='store_true', dest='visualize', help='Data visualization with plots')
 
     args = parser.parse_args()
 
@@ -81,4 +82,19 @@ def main():
 
 
 if(__name__ == "__main__"):
-	main()
+
+    path = '../results/profiler/'
+    if not os.path.exists(path):
+        os.makedirs(path)
+        
+    cProfile.run('main()', filename = path+"profiler.pstats")
+    if os.path.isfile(path+"profiler.pstats"):
+        subprocess.run("gprof2dot -f pstats {}profiler.pstats > {}graph.dot".format(path, path), shell=True)
+        (graph,) = pydot.graph_from_dot_file("{}graph.dot".format(path))
+        graph.write_png('{}graph.png'.format(path))
+        s = io.StringIO()
+        ps = pstats.Stats(path+"profiler.pstats", stream=s)
+        ps.print_stats()
+
+        with open(path+"profiler.txt", 'w') as f:
+            f.write(s.getvalue())
