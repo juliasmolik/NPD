@@ -58,6 +58,16 @@ parameter allows the user to visualize the obtained results with various plots.
 * Data visualization [visualize.py](https://github.com/juliasmolik/NPD/blob/main/projekt/scripts/visualize.py)
 * Tests [tests.py](https://github.com/juliasmolik/NPD/blob/main/projekt/tests/test.py)
 
+### Requirements
+* Python ≥ 3.9.0
+* Pandas ≥ 1.2.4
+* Seaborn ≥ 0.11.1
+* Matplotlib ≥ 3.3.4
+* Pytest ≥ 6.2.3
+* Pydot ≥ 1.4.2
+* Python libraries: argparse, os, sys, cProfile, pstats, subprocess, io, textwrap, difflib
+
+
 ## Output
 * Table merged by country and year with data on the country, its population, GDP and CO2 emissions in each year 
 * Table merged by country and year with data on the country, its population, GDP and CO2 emissions in each year, filtered to a range of years specified by the user
