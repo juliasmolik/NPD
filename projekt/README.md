@@ -9,7 +9,7 @@ This program was developed as the final project on the subject Tools Supporting 
 
 ## Getting started
 
-The program comes as a package that can be installed with the pip command. The user must be in the directory with the package and type in the console 
+The program comes as a [package](https://github.com/juliasmolik/NPD/tree/main/projekt/dist) that can be installed with the pip command. The user must be in the directory with the package and type in the console 
 
 ```
 $ pip3 install [package_name]
