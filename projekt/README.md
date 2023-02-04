@@ -86,6 +86,5 @@ python3 ../../tests/test.py
 
 ## Documentation
 
-* [PDF version]()
 * [Online version](https://students.mimuw.edu.pl/~js406162/npd/index.html)
 
