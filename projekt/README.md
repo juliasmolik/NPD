@@ -2,7 +2,7 @@
 A project to study the relationship between countries' income (GDP - gross domestic product), population numbers and CO2 emissions and visualize these results with various plots.
 
 ## Author
-Julia Smolik
+Julia Smolik, <a href="mailto:js406162@students.mimuw.edu.pl?subject=[NPD] projekt końcowy">js406162@students.mimuw.edu.pl</a>
 
 ## About
 This program was developed as the final project on the subject Tools Supporting Data Analysis in Python at the Faculty of Mathematics, Informatics and Mechanics, University of Warsaw under the labs tutelage of [Jarosław Paszek, PhD](https://github.com/j-paszek). It is a program that allows the user to merge the data by country and year found in all the [GDP](https://data.worldbank.org/indicator/NY.GDP.MKTP.CD), [population](https://data.worldbank.org/indicator/SP.POP.TOTL) and [CO2](https://datahub.io/core/co2-fossil-by-nation) data csv files, and then visualize them with various plots. The only argument the user has to provide is the paths to the csv files with the data. The rest of the arguments are optional and relate to data filtering and visualization.
