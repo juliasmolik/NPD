@@ -60,7 +60,7 @@ def main():
     population_data = args.population_file
     co2_data = args.emissions_file
 
-    path = '../results/'
+    path = '../../results/'
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -83,7 +83,7 @@ def main():
 
 if(__name__ == "__main__"):
 
-    path = '../results/profiler/'
+    path = '../../results/profiler/'
     if not os.path.exists(path):
         os.makedirs(path)
         

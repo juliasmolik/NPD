@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling", "pandas", "seaborn", "matplotlib", "pytest", "pydot"]
+build-backend = "hatchling.build"
+
+[project]
+name = "package_npd_js"
+version = "0.0.1"
+authors = [
+  { name="Julia Smolik", email="js406162@students.mimuw.edu.pl" },
+]
+description = "NPD final project"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/juliasmolik/NPD/tree/main/projekt"
+"Bug Tracker" = "https://github.com/juliasmolik/NPD/tree/main/projekt/issues"

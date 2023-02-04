@@ -9,7 +9,7 @@ This program was developed as the final project on the subject Tools Supporting 
 
 ## Getting started
 
-The program comes as a package that can be installed with the pip command. The user must be in the directory with the downloaded package and type in the console 
+The program comes as a package that can be installed with the pip command. The user must be in the directory with the package and type in the console 
 
 ```
 $ pip3 install [package_name]
@@ -18,9 +18,9 @@ where
 ```
 [package_name] 
 ```
-is the name of the downloaded project package.
+is the name of the project package.
 
-Installing this package allows the user to install all the necessary modules to run the program and get all the results. The program includes scripts to pre-process the data, select the years and countries present in all the files, merge them by country and year, and filter the merged data to the range of years of interest to the user. 
+Installing this package allows the user to install all the necessary modules to run the program and get all the results. The program includes scripts to pre-process the data, select the years and countries present in all the files, merge the data by country and year, and filter the merged data to the range of years of interest to the user. In addition, the user can visualize the received data using various plots. 
 
 ## Tutorial
 ### How to call the program

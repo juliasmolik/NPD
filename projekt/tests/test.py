@@ -1,9 +1,9 @@
-import pytest, sys, subprocess
-sys.path.insert(1, '../scripts/')
+import pytest, sys
+sys.path.insert(1, './')
 import prepare_data, calculations
 
 
-def test_filter_data(gdp_data = "../data/gdp.csv", population_data = "../data/population.csv", co2_data = "../data/co2.csv"):
+def test_filter_data(gdp_data = "../../data/gdp.csv", population_data = "../../data/population.csv", co2_data = "../../data/co2.csv"):
     
     df_gdp, df_population, df_co2 = prepare_data.filter_data(gdp_data, population_data, co2_data)
     
@@ -15,7 +15,7 @@ def test_filter_data(gdp_data = "../data/gdp.csv", population_data = "../data/po
     
     assert gdp_output == population_output == co2_output == result
 
-def test_create_data(gdp_data = "../data/gdp.csv", population_data = "../data/population.csv", co2_data = "../data/co2.csv"):
+def test_create_data(gdp_data = "../../data/gdp.csv", population_data = "../../data/population.csv", co2_data = "../../data/co2.csv"):
 
     data = prepare_data.create_data(gdp_data, population_data, co2_data)
     
@@ -49,7 +49,7 @@ def test_create_data(gdp_data = "../data/gdp.csv", population_data = "../data/po
     assert data_output == result
     
 
-def test_custom_filtering(gdp_data = "../data/gdp.csv", population_data = "../data/population.csv", co2_data = "../data/co2.csv", start_year = 1994, end_year = 2014, file_name = "filtered_data"):
+def test_custom_filtering(gdp_data = "../../data/gdp.csv", population_data = "../../data/population.csv", co2_data = "../../data/co2.csv", start_year = 1994, end_year = 2014, file_name = "filtered_data"):
     
     filtered = prepare_data.custom_filtering(gdp_data, population_data, co2_data, start_year, end_year, file_name)
     
@@ -57,7 +57,7 @@ def test_custom_filtering(gdp_data = "../data/gdp.csv", population_data = "../da
     
     assert data_output[0] == start_year and data_output[-1] == end_year
 
-def test_co2_per_capita(csv_file = "../results/filtered_data.csv"):
+def test_co2_per_capita(csv_file = "../../results/filtered_data.csv"):
     
     co2_per_capita = calculations.co2_per_capita(csv_file)
     
@@ -87,7 +87,7 @@ def test_co2_per_capita(csv_file = "../results/filtered_data.csv"):
 
     assert co2_per_capita_output == result
 
-def test_gdp_per_capita(csv_file = "../results/filtered_data.csv"):
+def test_gdp_per_capita(csv_file = "../../results/filtered_data.csv"):
     
     gdp_per_capita = calculations.gdp_per_capita(csv_file)
     
@@ -117,7 +117,7 @@ def test_gdp_per_capita(csv_file = "../results/filtered_data.csv"):
     
     assert gdp_per_capita_output == result
 
-def test_change_of_co2_emission(csv_file = "../results/filtered_data.csv"):
+def test_change_of_co2_emission(csv_file = "../../results/filtered_data.csv"):
     
     change_of_co2_emission = calculations.change_of_co2_emission(csv_file)
     
@@ -130,10 +130,10 @@ def test_change_of_co2_emission(csv_file = "../results/filtered_data.csv"):
 
 def main():
     
-    gdp_data = "../data/gdp.csv"
-    population_data = "../data/population.csv"
-    co2_data = "../data/co2.csv"
-    filtered_data = "../results/filtered_data.csv"
+    gdp_data = "../../data/gdp.csv"
+    population_data = "../../data/population.csv"
+    co2_data = "../../data/co2.csv"
+    filtered_data = "../../results/filtered_data.csv"
     
     test_filter_data(gdp_data = gdp_data, population_data = population_data, co2_data = co2_data)
     test_create_data(gdp_data = gdp_data, population_data = population_data, co2_data = co2_data)
@@ -144,4 +144,4 @@ def main():
 
 if(__name__ == "__main__"):
     
-    pytest.main(["../tests/test.py"])
+    pytest.main(["../../tests/test.py"])
