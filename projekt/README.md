@@ -44,6 +44,13 @@ are integers that allow the data to be filtered to a specific range of years.
 ```
 parameter allows the user to visualize the obtained results with various plots. 
 
+### How to call the tests
+To call the tests, the user needs to be in the package directory and type in the terminal
+```
+python3 ../../tests/test.py
+```
+
+
 ## Project overview
 
 ### Input
